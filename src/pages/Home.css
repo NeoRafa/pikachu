@@ -1,0 +1,21 @@
+.pokeLogo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5em;
+}
+
+.mainWrap {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.innerWrap {
+    margin: auto 0;
+}
+
+.pokeInput {
+    width: 55em;
+    margin-right: 1em;
+}
