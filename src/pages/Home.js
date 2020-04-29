@@ -1,7 +1,7 @@
 import { Component } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Input, Image, Button, Segment } from "semantic-ui-react";
+import { Input, Image, Button, Segment, Container } from "semantic-ui-react";
 import pokemon from "../assets/pokemon-logo.png";
 import "./Home.css";
 const axios = require("axios");
@@ -29,9 +29,12 @@ class Home extends Component {
     })
       .catch((err) => {
         console.error(err);
+        this.setState({ loading: false });
       })
       .then((resp) => {
-        this.setState({ results: resp.data, loading: false });
+        if (resp) {
+          this.setState({ results: resp.data, loading: false });
+        }
       });
     event.preventDefault();
   }
@@ -41,7 +44,9 @@ class Home extends Component {
     const link = results ? "/chars/" + results.id : "";
     let resultsSection = results ? (
       <Segment>
-        <Link to={link}>{results.name}</Link>
+        <Container textAlign="left">
+          <Link to={link}>{results.name}</Link>
+        </Container>
       </Segment>
     ) : (
       ""
