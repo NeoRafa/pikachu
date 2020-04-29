@@ -1,6 +1,6 @@
 import { Component } from "react";
 import React from "react";
-import { Input, Image, Button, List } from "semantic-ui-react";
+import { Input, Image, Button, Segment } from "semantic-ui-react";
 import pokemon from "../assets/pokemon-logo.png";
 import "./Home.css";
 const axios = require("axios");
@@ -23,22 +23,24 @@ class Home extends Component {
       method: "get",
       url: url,
     }).then((resp) => {
-      console.log(resp);
-      this.setState({ results: resp });
+      this.setState({ results: resp.data });
     });
     event.preventDefault();
   }
 
   render() {
-    const { value, results } = this.state;
+    const { results } = this.state;
+    const formsNames = results
+      ? results.forms.map((pokemonForm) => {
+          return (
+            <div key={pokemonForm.name}>{pokemonForm.name}</div>
+          );
+        })
+      : "";
 
-    let resultsSection = (
-      <List>
-        {results.forms.map((pokemonForm) => {
-          return <List.item>{pokemonForm.name}</List.item>;
-        })}
-      </List>
-    );
+      console.log(formsNames);
+
+    let resultsSection = results ? <Segment>{formsNames}</Segment> : '';
 
     return (
       <div className="mainWrap">
@@ -59,7 +61,6 @@ class Home extends Component {
           </form>
 
           {results ? resultsSection : ""}
-          
         </div>
       </div>
     );
