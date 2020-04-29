@@ -48,6 +48,7 @@ class Pokemon extends Component {
       id,
       abilities,
       height,
+      weight,
       moves,
       stats,
       sprites,
@@ -59,6 +60,7 @@ class Pokemon extends Component {
           name: null,
           id: null,
           abilities: [],
+          weight: null,
           sprites: null,
           height: null,
           moves: [],
@@ -84,11 +86,11 @@ class Pokemon extends Component {
             </List.Item>
             <br></br>
             <List.Item>
-              <h3>Types</h3> {types.map((type) => type.type.name).join(" / ")}
+              <h3>Types:</h3> {types.map((type) => type.type.name).join(" / ")}
             </List.Item>
             <br></br>
             <List.Item>
-              <h3>Sprites</h3>
+              <h3>Sprites:</h3>
               {sprites ? (
                 <div className="spritesWrapper">
                   <Image src={sprites.back_default} size="small"></Image>
@@ -106,7 +108,7 @@ class Pokemon extends Component {
                 <Table celled>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Abilities</Table.HeaderCell>
+                      <Table.HeaderCell>Abilities:</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
@@ -114,7 +116,7 @@ class Pokemon extends Component {
                       return (
                         <Table.Row key={index}>
                           <Table.Cell>
-                            <a href="ability.ability.url">
+                            <a href={ability.ability.url}>
                               {ability.ability.name}
                             </a>
                           </Table.Cell>
@@ -129,15 +131,16 @@ class Pokemon extends Component {
             </List.Item>
             <br></br>
             <List.Item>
-              <h3>Infos</h3>
+              <h3>Infos:</h3>
               <div>
                 <span>Height: {height}</span> &nbsp; / &nbsp;
-                <span>Base Experience: {base_experience}</span>
+                <span>Base Experience: {base_experience}</span> &nbsp; / &nbsp;
+                <span>Weight: {weight}</span>
               </div>
             </List.Item>
             <br></br>
             <List.Item>
-              <h3>Status</h3>
+              <h3>Status:</h3>
               {stats.length > 0 ? (
                 <Table celled>
                   <Table.Header>
@@ -169,7 +172,11 @@ class Pokemon extends Component {
             <List.Item>
               {moves.length > 0 ? (
                 <Accordion>
-                  <Accordion.Title active={showMoves} onClick={this.movesClick} index={0}>
+                  <Accordion.Title
+                    active={showMoves}
+                    onClick={this.movesClick}
+                    index={0}
+                  >
                     <Icon name="dropdown" />
                     Moves
                   </Accordion.Title>

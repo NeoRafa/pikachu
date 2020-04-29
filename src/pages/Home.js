@@ -1,7 +1,14 @@
 import { Component } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Input, Image, Button, Segment, Container } from "semantic-ui-react";
+import {
+  Input,
+  Image,
+  Button,
+  Segment,
+  Container,
+  Message,
+} from "semantic-ui-react";
 import pokemon from "../assets/pokemon-logo.png";
 import "./Home.css";
 const axios = require("axios");
@@ -15,7 +22,7 @@ class Home extends Component {
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
+    this.setState({ value: event.target.value, error: false });
   }
 
   handleSubmit(event) {
@@ -29,7 +36,10 @@ class Home extends Component {
     })
       .catch((err) => {
         console.error(err);
-        this.setState({ loading: false });
+        this.setState({ loading: false, error: true, results: null });
+        setTimeout(() => {
+          this.setState({ error: false });
+        }, 8000);
       })
       .then((resp) => {
         if (resp) {
@@ -40,7 +50,7 @@ class Home extends Component {
   }
 
   render() {
-    const { results, loading } = this.state;
+    const { results, loading, error } = this.state;
     const link = results ? "/chars/" + results.id : "";
     let resultsSection = results ? (
       <Segment>
@@ -71,6 +81,17 @@ class Home extends Component {
           </form>
 
           {results ? resultsSection : ""}
+
+          {error ? (
+            <Message warning>
+              <Message.Header>
+                Ops! Something went wrong with your request.
+              </Message.Header>
+              <p>Maybe the Pokémon you searched does not exist...yet!</p>
+            </Message>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     );
