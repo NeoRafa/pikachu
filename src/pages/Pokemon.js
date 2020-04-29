@@ -39,13 +39,12 @@ class Pokemon extends Component {
       name,
       id,
       abilities,
-      //   forms,
       height,
       moves,
-      //   order,
       stats,
       sprites,
       types,
+      base_experience
     } = pokemonData
       ? pokemonData
       : {
@@ -57,6 +56,7 @@ class Pokemon extends Component {
           moves: [],
           stats: [],
           types: [],
+          base_experience: null
         };
 
     return (
@@ -64,15 +64,23 @@ class Pokemon extends Component {
         <Segment textAlign="left">
           <List>
             <List.Item>
-              Name: {name} / Pokedex Number: {id}
+              <div>
+                <h3>Name:</h3>
+                {name}
+              </div>
+              <br></br>
+              <div>
+                <h3>Pokedex number:</h3>
+                {id}
+              </div>
             </List.Item>
             <br></br>
             <List.Item>
-              Types: {types.map((type) => type.type.name).join(" / ")}
+              <h3>Types</h3> {types.map((type) => type.type.name).join(" / ")}
             </List.Item>
             <br></br>
             <List.Item>
-              Sprites:
+              <h3>Sprites</h3>
               {sprites ? (
                 <div className="spritesWrapper">
                   <Image src={sprites.back_default} size="small"></Image>
@@ -86,19 +94,42 @@ class Pokemon extends Component {
             </List.Item>
             <br></br>
             <List.Item>
-              Abilities:
-              {abilities.map((ability) => (
-                <span key={ability.ability.url}>
-                  <a href={ability.ability.url}>{ability.ability.name}</a> |{" "}
-                </span>
-              ))}
+              {abilities.length > 0 ? (
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Abilities</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {abilities.map((ability) => {
+                      return (
+                        <Table.Row>
+                          <Table.Cell>
+                            <a href="ability.ability.url">
+                              {ability.ability.name}
+                            </a>
+                          </Table.Cell>
+                        </Table.Row>
+                      );
+                    })}
+                  </Table.Body>
+                </Table>
+              ) : (
+                ""
+              )}
             </List.Item>
             <br></br>
-            <List.Item>Height: {height}</List.Item>
+            <List.Item>
+              <h3>Infos</h3>
+              <div>
+                <span>Height: {height}</span> &nbsp; / &nbsp;
+                <span>Base Experience: {base_experience}</span>
+              </div>
+            </List.Item>
             <br></br>
             <List.Item>
-              Status:
-              <br></br>
+              <h3>Status</h3>
               {stats.length > 0 ? (
                 <Table celled>
                   <Table.Header>
@@ -128,8 +159,7 @@ class Pokemon extends Component {
             </List.Item>
             <br></br>
             <List.Item>
-              Moves:
-              <br></br>
+              <h3>Moves</h3>
               {moves.length > 0 ? (
                 <Table celled>
                   <Table.Header>
@@ -142,33 +172,28 @@ class Pokemon extends Component {
                   </Table.Header>
                   <Table.Body>
                     {moves.map((move) => {
-                      return move.version_group_details.map((moveVersion) => {
-                        return (
-                          <Table.Row
-                            key={
-                              move.move.name +
-                              moveVersion.version_group.name +
-                              moveVersion.move_learn_method +
-                              moveVersion.level_learned_at
-                            }
-                          >
-                            <Table.Cell>{move.move.name}</Table.Cell>
-                            <Table.Cell>
-                              {moveVersion.version_group.name}
-                            </Table.Cell>
-                            <Table.Cell>
-                              {moveVersion.level_learned_at}
-                            </Table.Cell>
-                            <Table.Cell>
-                              {
-                                <a href={moveVersion.move_learn_method.url}>
-                                  {moveVersion.move_learn_method.name}
-                                </a>
-                              }
-                            </Table.Cell>
-                          </Table.Row>
-                        );
-                      });
+                      return move.version_group_details.map(
+                        (moveVersion, index) => {
+                          return (
+                            <Table.Row key={index}>
+                              <Table.Cell>{move.move.name}</Table.Cell>
+                              <Table.Cell>
+                                {moveVersion.version_group.name}
+                              </Table.Cell>
+                              <Table.Cell>
+                                {moveVersion.level_learned_at}
+                              </Table.Cell>
+                              <Table.Cell>
+                                {
+                                  <a href={moveVersion.move_learn_method.url}>
+                                    {moveVersion.move_learn_method.name}
+                                  </a>
+                                }
+                              </Table.Cell>
+                            </Table.Row>
+                          );
+                        }
+                      );
                     })}
                   </Table.Body>
                 </Table>
@@ -177,7 +202,9 @@ class Pokemon extends Component {
               )}
             </List.Item>
           </List>
-          <Button onClick={() => this.props.history.push('/')}>Go to Home</Button>
+          <Button onClick={() => this.props.history.push("/")}>
+            Go to Home
+          </Button>
         </Segment>
       </Container>
     );
