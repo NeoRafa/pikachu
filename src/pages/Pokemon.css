@@ -1,0 +1,7 @@
+.spritesWrapper {
+    display: flex;
+}
+
+.pokemonAbout {
+    margin-top: 2em;
+}
