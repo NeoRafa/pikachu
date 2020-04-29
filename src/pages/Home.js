@@ -1,6 +1,6 @@
 import { Component } from "react";
 import React from "react";
-import { Input, Image, Button } from "semantic-ui-react";
+import { Input, Image, Button, List } from "semantic-ui-react";
 import pokemon from "../assets/pokemon-logo.png";
 import "./Home.css";
 const axios = require("axios");
@@ -8,7 +8,7 @@ const axios = require("axios");
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: "", results: [] };
+    this.state = { value: "", results: null };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -24,11 +24,22 @@ class Home extends Component {
       url: url,
     }).then((resp) => {
       console.log(resp);
+      this.setState({ results: resp });
     });
     event.preventDefault();
   }
 
   render() {
+    const { value, results } = this.state;
+
+    let resultsSection = (
+      <List>
+        {results.forms.map((pokemonForm) => {
+          return <List.item>{pokemonForm.name}</List.item>;
+        })}
+      </List>
+    );
+
     return (
       <div className="mainWrap">
         <div className="innerWrap">
@@ -46,6 +57,9 @@ class Home extends Component {
             />
             <Button type="submit">Search</Button>
           </form>
+
+          {results ? resultsSection : ""}
+          
         </div>
       </div>
     );
