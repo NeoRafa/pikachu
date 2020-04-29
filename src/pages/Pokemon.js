@@ -48,6 +48,7 @@ class Pokemon extends Component {
       id,
       abilities,
       height,
+      held_items,
       weight,
       moves,
       stats,
@@ -61,6 +62,7 @@ class Pokemon extends Component {
           id: null,
           abilities: [],
           weight: null,
+          held_items: [],
           sprites: null,
           height: null,
           moves: [],
@@ -98,6 +100,33 @@ class Pokemon extends Component {
                   <Image src={sprites.back_shiny} size="small"></Image>
                   <Image src={sprites.front_shiny} size="small"></Image>
                 </div>
+              ) : (
+                ""
+              )}
+            </List.Item>
+            <br></br>
+            <List.Item>
+              {held_items.length > 0 ? (
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Held Items</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {held_items.map((held_item, index) => {
+                      return (
+                        <Table.Row key={index}>
+                          <Table.Cell>
+                            <a href={held_item.item.url}>
+                              {held_item.item.name}
+                            </a>
+                          </Table.Cell>
+                        </Table.Row>
+                      );
+                    })}
+                  </Table.Body>
+                </Table>
               ) : (
                 ""
               )}
