@@ -177,6 +177,7 @@ class Pokemon extends Component {
               )}
             </List.Item>
           </List>
+          <Button onClick={() => this.props.history.push('/')}>Go to Home</Button>
         </Segment>
       </Container>
     );
