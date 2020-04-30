@@ -70,7 +70,7 @@ class Home extends Component {
             <Image src={pokemon} size="medium"></Image>
             <Header as="h1">
               Pikachu
-              <Header.Subheader>An ClassApp React App!</Header.Subheader>
+              <Header.Subheader>A ClassApp React App!</Header.Subheader>
             </Header>
           </div>
           <form onSubmit={this.handleSubmit}>
