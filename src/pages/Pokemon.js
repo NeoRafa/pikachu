@@ -16,14 +16,18 @@ const axios = require("axios");
 class Pokemon extends Component {
   constructor(props) {
     super(props);
-    this.state = { pokemonData: null, showMoves: false };
+    this.state = {
+      pokemonData: null,
+      showMoves: false,
+      pokemonDescription: null,
+    };
     this.movesClick = this.movesClick.bind(this);
   }
 
   componentWillMount() {
     const { id } = this.props.match.params;
     const url = "https://pokeapi.co/api/v2/pokemon/" + id;
-
+    const descriptionUrl = "https://pokeapi.co/api/v2/pokemon-species/" + id;
     axios({
       method: "get",
       url: url,
@@ -34,6 +38,17 @@ class Pokemon extends Component {
       .then((resp) => {
         this.setState({ pokemonData: resp.data });
       });
+
+    axios({
+      method: "get",
+      url: descriptionUrl,
+    })
+      .catch((err) => {
+        console.error(err);
+      })
+      .then((resp) => {
+        this.setState({ pokemonDescription: resp.data });
+      });
   }
 
   movesClick() {
@@ -42,7 +57,7 @@ class Pokemon extends Component {
   }
 
   render() {
-    const { pokemonData, showMoves } = this.state;
+    const { pokemonData, showMoves, pokemonDescription } = this.state;
     const {
       name,
       id,
@@ -70,6 +85,9 @@ class Pokemon extends Component {
           types: [],
           base_experience: null,
         };
+    const { flavor_text_entries } = pokemonDescription
+      ? pokemonDescription
+      : { flavor_text_entries: [] };
 
     return (
       <Container className="pokemonAbout">
@@ -161,6 +179,38 @@ class Pokemon extends Component {
             <br></br>
             <List.Item>
               <h3>Infos:</h3>
+              <div>
+                {flavor_text_entries.length > 0 ? (
+                  <Table celled>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>Description:</Table.HeaderCell>
+                        <Table.HeaderCell>Version:</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                      {flavor_text_entries.map((flavor, index) => {
+                        console.log(flavor)
+                        if (flavor.language.name === 'en') {
+                          return (
+                            <Table.Row key={index}>
+                              <Table.Cell>
+                                {flavor.flavor_text}
+                              </Table.Cell>
+                              <Table.Cell>
+                                {flavor.version.name}
+                              </Table.Cell>
+                            </Table.Row>
+                          );
+                        }
+                      })}
+                    </Table.Body>
+                  </Table>
+                ) : (
+                  ""
+                )}
+              </div>
+              <br></br>
               <div>
                 <span>Height: {height}</span> &nbsp; / &nbsp;
                 <span>Base Experience: {base_experience}</span> &nbsp; / &nbsp;
@@ -255,9 +305,7 @@ class Pokemon extends Component {
               )}
             </List.Item>
           </List>
-          <Button onClick={() => this.props.history.push("/")}>
-            Go to Home
-          </Button>
+          <Button onClick={() => this.props.history.push("/")}>Back</Button>
         </Segment>
       </Container>
     );
