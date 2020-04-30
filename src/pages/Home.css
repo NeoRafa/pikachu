@@ -1,6 +1,7 @@
 .pokeLogo {
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
     margin: 5em;
 }

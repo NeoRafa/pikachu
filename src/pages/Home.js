@@ -8,6 +8,7 @@ import {
   Segment,
   Container,
   Message,
+  Header,
 } from "semantic-ui-react";
 import pokemon from "../assets/pokemon-logo.png";
 import "./Home.css";
@@ -67,6 +68,10 @@ class Home extends Component {
         <div className="innerWrap">
           <div className="pokeLogo">
             <Image src={pokemon} size="medium"></Image>
+            <Header as="h1">
+              Pikachu
+              <Header.Subheader>A ClassApp React App!</Header.Subheader>
+            </Header>
           </div>
           <form onSubmit={this.handleSubmit}>
             <Input
